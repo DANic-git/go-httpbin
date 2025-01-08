@@ -125,6 +125,7 @@ func observe(o Observer, h http.Handler) http.Handler {
 			Duration:  time.Since(t),
 			UserAgent: r.Header.Get("User-Agent"),
 			ClientIP:  getClientIP(r),
+			Host:      r.Host,
 		})
 	})
 }
@@ -138,6 +139,7 @@ type Result struct {
 	Duration  time.Duration
 	UserAgent string
 	ClientIP  string
+	Host      string
 }
 
 // Observer is a function that will be called with the details of a handled
@@ -165,6 +167,7 @@ func StdLogObserver(l *slog.Logger) Observer {
 			slog.Float64("duration_ms", result.Duration.Seconds()*1e3),
 			slog.String("user_agent", result.UserAgent),
 			slog.String("client_ip", result.ClientIP),
+			slog.String("host", result.Host),
 		)
 	}
 }
